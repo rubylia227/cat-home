@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🐱 Ruby 的貓咪回家 Flexbox 挑戰賽 🐱</title>
     <style>
-        /* 基礎樣式設定 */
         body {
             background-color: #f4f6f9;
             color: #333;
@@ -26,7 +25,6 @@
             margin-bottom: 30px;
         }
 
-        /* 遊戲主卡片 */
         .game-card {
             background: #ffffff;
             border: 1px solid #e1e4e8;
@@ -44,7 +42,6 @@
             .game-card { grid-template-columns: 1fr; }
         }
 
-        /* 左邊控制區 */
         .control-panel {
             display: flex;
             flex-direction: column;
@@ -61,7 +58,6 @@
             line-height: 1.6;
         }
 
-        /* 黑色 CSS 代碼輸入框 */
         .css-editor {
             background-color: #1e1e1e;
             color: #d4d4d4;
@@ -76,7 +72,6 @@
         .css-class { color: #85c46c; }
         .css-prop { color: #569cd6; }
 
-        /* 讓玩家可以打字的純文字輸入框 */
         .flex-input {
             background: transparent;
             border: none;
@@ -90,7 +85,6 @@
             font-weight: bold;
         }
 
-        /* 右邊舞台區（便當盒） */
         .stage-panel {
             display: flex;
             flex-direction: column;
@@ -102,22 +96,23 @@
             border: 3px dashed #9b5de5; 
             border-radius: 12px;
             height: 250px;
-            padding: 0 20px;
-            
-            /* 預設的 Flex 設定 */
+            padding: 0 40px;
             display: flex;
-            justify-content: flex-end; /* 預設貓跟盒子在右邊 */
+            justify-content: flex-end; /* 預設在右邊 */
             align-items: center;
-            
-            transition: justify-content 0.5s ease;
         }
 
         .game-item {
             font-size: 60px;
             user-select: none;
+            transition: all 0.5s ease;
         }
 
-        /* 成功破關大字 */
+        /* 貓咪的魔法移動設定 */
+        .cat-item {
+            margin-right: 0px;
+        }
+
         .success-banner {
             grid-column: 1 / -1;
             background-color: #d1e7dd;
@@ -141,10 +136,8 @@
         
         <div class="control-panel">
             <div class="mission-info">
-                <strong>🎯 關卡目標：讓花苗...啊不是，是讓貓咪回家！</strong><br>
-                貓咪（🐱）現在跟盒子（📦）一起縮在最右邊。請在下方的黑色代碼框中，手動輸入正確的對齊語法，利用剩餘空間把貓咪推回最左邊的家（🏠）門口！
-                <br><br>
-                💡 提示：試著打入 <strong>space-between;</strong>
+                <strong>🎯 關卡目標：讓貓咪真正回到家門口！</strong><br>
+                請在黑色框框裡打入 <strong>space-between</strong>。這一次軍師加了空間修正魔法，當妳輸入完成後，貓咪（🐱）會瞬間跨越空間，**直接貼在溫暖的家（🏠）旁邊**，把紙箱（📦）孤零零留在最右邊！
             </div>
 
             <div class="css-editor">
@@ -159,33 +152,40 @@
 
         <div class="stage-panel">
             <div class="flex-bendong-box" id="bendongStage">
-                <div class="game-item">🏠</div> <div class="game-item">🐱</div> <div class="game-item">📦</div> </div>
+                <div class="game-item" id="homeObj">🏠</div> 
+                <div class="game-item cat-item" id="catObj">🐱</div> 
+                <div class="game-item" id="boxObj">📦</div> 
+            </div>
         </div>
 
         <div class="success-banner" id="successBanner">
-            🎉 太厲害了！妳正確輸入了 space-between; 成功利用 Flexbox 能量把貓咪送回溫暖的家！破關大成功！
+            🎉 破關大成功！貓咪順利搬出紙箱，回到了溫暖的家門口貼貼了！
         </div>
 
     </div>
 
     <script>
         function checkCSSCode() {
-            // 拿到玩家打的字，並自動把空格刪掉
-            var userInput = document.getElementById('cssInputField').value.trim();
+            var userInput = document.getElementById('cssInputField').value.toLowerCase().trim();
+            if (userInput.endsWith(';')) {
+                userInput = userInput.slice(0, -1).trim();
+            }
+            
             var stage = document.getElementById('bendongStage');
+            var cat = document.getElementById('catObj');
             var banner = document.getElementById('successBanner');
 
-            // 1. 如果玩家打對了 space-between; 或是 space-between
-            if (userInput === 'space-between;' || userInput === 'space-between') {
+            if (userInput === 'space-between') {
                 stage.style.justifyContent = 'space-between';
+                // 核心魔法：讓貓咪在 space-between 的推力下，往右推的力道變成無限大，牠就會死死黏在左邊的家旁邊！
+                cat.style.marginRight = 'auto'; 
                 banner.style.display = 'block';
             } 
-            // 2. 如果玩家打 flex-end; 或是 flex-end (貓回盒子)
-            else if (userInput === 'flex-end;' || userInput === 'flex-end') {
+            else if (userInput === 'flex-end') {
                 stage.style.justifyContent = 'flex-end';
+                cat.style.marginRight = '0px';
                 banner.style.display = 'none';
             }
-            // 3. 其他亂打的時候維持原狀
             else {
                 banner.style.display = 'none';
             }
