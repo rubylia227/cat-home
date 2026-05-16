@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🐱 Ruby 的貓咪回家 Flexbox 挑戰賽 🐱</title>
     <style>
-        /* 網頁底色與字體基礎設定 */
+        /* 網頁基礎設定 */
         body {
             background-color: #f4f6f9;
             color: #333;
@@ -52,7 +52,7 @@
         /* 【便當盒舞台區】開啟 Flex 魔法的外框 */
         .flex-bendong-box {
             background-color: #faf8ff;
-            border: 3px dashed #9b5de5; /* 妳專屬的紫色虛線框 */
+            border: 3px dashed #9b5de5; 
             border-radius: 12px;
             height: 140px;
             margin-bottom: 25px;
@@ -145,4 +145,49 @@
     <div class="game-card">
         <div class="mission-info">
             <strong>🎯 關卡目標：</strong><br>
-            貓咪一直待在盒子（📦）裡也不是辦法。現在最左邊有一棟溫暖的家（🏠），請點擊右下角的按鈕切換 Flexbox
+            貓咪一直待在盒子（📦）裡也不是辦法。現在最左邊有一棟溫暖的家（🏠），請點擊右下角的按鈕切換 Flexbox 排版指令，把貓咪（🐱）從盒子裡拉出來，送回左邊的家門口吧！
+        </div>
+
+        <div class="flex-bendong-box" id="bendongStage">
+            <div class="game-item">🏠</div> <div class="game-item">🐱</div> <div class="game-item">📦</div> </div>
+
+        <div class="panel-layout">
+            <div class="css-monitor">
+                <span class="css-class">.bendong-box</span> {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="css-prop">display</span>: <span class="css-val">flex</span>;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="css-prop">justify-content</span>: <span class="css-val" id="textCSS">flex-end</span>;<br>
+                }
+            </div>
+
+            <div class="btn-group">
+                <button onclick="changeFlex('flex-end')">讓貓待在盒子裡 (flex-end)</button>
+                <button onclick="changeFlex('space-between')">把貓拿出來送回家 (space-between)</button>
+            </div>
+        </div>
+
+        <div class="success-banner" id="successBanner">
+            🎉 恭喜過關！成功運用 space-between 拉開物件，貓咪順利離開盒子回到溫暖的家！
+        </div>
+    </div>
+
+    <script>
+        function changeFlex(syntax) {
+            // 1. 改變舞台便當盒的對齊語法
+            const stage = document.getElementById('bendongStage');
+            stage.style.justifyContent = syntax;
+
+            // 2. 即時把黑框裡的 CSS 文字改成當下的指令
+            document.getElementById('textCSS').innerText = syntax;
+
+            // 3. 如果是 space-between，就把貓咪拿出來了，顯示過關文字
+            const banner = document.getElementById('successBanner');
+            if (syntax === 'space-between') {
+                banner.style.display = 'block';
+            } else {
+                banner.style.display = 'none';
+            }
+        }
+    </script>
+
+</body>
+</html>
